@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 make clean
@@ -27,14 +29,9 @@ for arch in "$@"; do
 
 		set(CMAKE_SYSROOT "/opt/musl-cross-make/$arch-linux-musl")
 
-		set(CMAKE_C_FLAGS   "--sysroot=/opt/musl-cross-make/$arch-linux-musl --gcc-toolchain=/opt/musl-cross-make")
-		set(CMAKE_CXX_FLAGS "--sysroot=/opt/musl-cross-make/$arch-linux-musl --gcc-toolchain=/opt/musl-cross-make")
+		set(CMAKE_C_FLAGS   "--target=$arch-linux-musl --gcc-toolchain=/opt/musl-cross-make -v")
+		set(CMAKE_CXX_FLAGS "--target=$arch-linux-musl --gcc-toolchain=/opt/musl-cross-make -v")
 
 		set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=lld")
-		set(CMAKE_FIND_ROOT_PATH "/opt/musl-cross-make/$arch-linux-musl")
-		set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-		set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
-		set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
-		set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 	EOF
 done
